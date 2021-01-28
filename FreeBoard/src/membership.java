@@ -37,7 +37,7 @@ public class membership {
 
         S1.update(user_id, user_password, user_name, user_age);
         int i = 1;
-        S1.select();
+        S1.select("SELECT * FROM member_info");
         try{
             while(S1.rs.next()){
                 System.out.printf("===============\n %d번째 반복중입니다.\n ============= \n", i++);

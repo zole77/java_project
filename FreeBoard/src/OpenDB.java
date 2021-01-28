@@ -4,7 +4,9 @@ public class OpenDB {
     java.sql.Connection conn;
 
     PreparedStatement pstmt = null;
+    PreparedStatement pstmt_check = null;
     String sql = "INSERT INTO member_info(id, password, name, age)" + "VALUES(?,?,?,?)";
+    String sql2 = "SELECT * FROM member_info WHERE id = ?";
     java.sql.ResultSet rs;
     PreparedStatement ps = null;
 
@@ -21,6 +23,7 @@ public class OpenDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.conn = java.sql.DriverManager.getConnection(dbinfo, dbid, dbps);
             this.pstmt = this.conn.prepareStatement(sql);
+            this.pstmt_check = this.conn.prepareStatement(sql2);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -46,6 +49,26 @@ public class OpenDB {
             this.rs = ps.executeQuery();
             this.rs.beforeFirst();
         }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void check(String user_id, String user_password){
+        try {
+            pstmt_check.setString(1, user_id);
+            this.rs = pstmt_check.executeQuery();
+            if(this.rs.next()){
+                String tmp_pass = rs.getString("password");
+
+                if(tmp_pass.equals(user_password)){
+                    System.out.println("로그인이 성공하였습니다 !!!");
+                }else{
+                    System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
+                }
+            }else{
+                System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
