@@ -18,7 +18,7 @@ public class Main {
 
         Check c1 = new Check(user_id, user_password);
 
-
-
+        BoardControl B1 = new BoardControl(user_id);
+        B1.Write();
     }
 }

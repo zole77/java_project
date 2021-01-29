@@ -4,9 +4,11 @@ public class OpenDB {
     java.sql.Connection conn;
 
     PreparedStatement pstmt = null;
-    PreparedStatement pstmt_check = null;
+
     String sql = "INSERT INTO member_info(id, password, name, age)" + "VALUES(?,?,?,?)";
     String sql2 = "SELECT * FROM member_info WHERE id = ?";
+    String sql3 = "INSERT INTO Board(title,m_text,created,author)" + "VALUES(?,?,NOW(),?)";
+
     java.sql.ResultSet rs;
     PreparedStatement ps = null;
 
@@ -22,8 +24,6 @@ public class OpenDB {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.conn = java.sql.DriverManager.getConnection(dbinfo, dbid, dbps);
-            this.pstmt = this.conn.prepareStatement(sql);
-            this.pstmt_check = this.conn.prepareStatement(sql2);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
@@ -33,6 +33,7 @@ public class OpenDB {
 
     void update(String id, String password, String name, int age){
         try{
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1,id);
             pstmt.setString(2,password);
             pstmt.setString(3,name);
@@ -55,8 +56,9 @@ public class OpenDB {
 
     void check(String user_id, String user_password){
         try {
-            pstmt_check.setString(1, user_id);
-            this.rs = pstmt_check.executeQuery();
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setString(1, user_id);
+            this.rs = pstmt.executeQuery();
             if(this.rs.next()){
                 String tmp_pass = rs.getString("password");
 
@@ -69,6 +71,18 @@ public class OpenDB {
                 System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void Write(String title, String plaintext, String user_id){
+        try{
+            pstmt = conn.prepareStatement(sql3);
+            pstmt.setString(1,title);
+            pstmt.setString(2,plaintext);
+            pstmt.setString(3,user_id);
+            this.pstmt.executeUpdate();
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
