@@ -7,7 +7,8 @@ public class OpenDB {
 
     String sql = "INSERT INTO member_info(id, password, name, age)" + "VALUES(?,?,?,?)";
     String sql2 = "SELECT * FROM member_info WHERE id = ?";
-    String sql3 = "INSERT INTO Board(title,m_text,created,author)" + "VALUES(?,?,NOW(),?)";
+    String sql3 = "INSERT INTO Board(title,main_text,created,author)" + "VALUES(?,?,NOW(),?)";
+    String sql4 = "DELETE FROM Board WHERE B_no = ?";
 
     java.sql.ResultSet rs;
     PreparedStatement ps = null;
@@ -17,7 +18,7 @@ public class OpenDB {
     }
 
     void connect() {
-        String dbinfo = "jdbc:mysql://localhost:3307/Member";
+        String dbinfo = "jdbc:mysql://localhost:3306/member";
         String dbid = "root";
         String dbps = "135156";
 
@@ -86,6 +87,17 @@ public class OpenDB {
             e.printStackTrace();
         }
     }
+
+    void Delete(String no){
+        try{
+            pstmt = conn.prepareStatement(sql4);
+            pstmt.setString(1, no);
+            this.pstmt.executeUpdate();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     void close(){
         try{

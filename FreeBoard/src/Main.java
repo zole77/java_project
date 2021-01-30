@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        membership m1 = new membership();
-        m1.Signup();
+//        membership m1 = new membership();
+//        m1.Signup();
 
         Scanner sc = new Scanner(System.in);
 
@@ -20,5 +20,6 @@ public class Main {
 
         BoardControl B1 = new BoardControl(user_id);
         B1.Write();
+        B1.Delete();
     }
 }
