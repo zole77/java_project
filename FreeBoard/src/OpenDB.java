@@ -56,7 +56,7 @@ public class OpenDB {
         }
     }
 
-    void check(String user_id, String user_password){
+    boolean check(String user_id, String user_password){
         try {
             pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1, user_id);
@@ -66,15 +66,19 @@ public class OpenDB {
 
                 if(tmp_pass.equals(user_password)){
                     System.out.println("로그인이 성공하였습니다 !!!");
+                    return true;
                 }else{
                     System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
+                    return false;
                 }
             }else{
                 System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
+                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     void Write(String title, String plaintext, String user_id){
