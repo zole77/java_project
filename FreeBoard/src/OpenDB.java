@@ -7,9 +7,7 @@ public class OpenDB {
 
     String sql = "INSERT INTO member_info(id, password, name, age)" + "VALUES(?,?,?,?)";
     String sql2 = "SELECT * FROM member_info WHERE id = ?";
-    String sql3 = "INSERT INTO Board(title,main_text,created,author)" + "VALUES(?,?,NOW(),?)";
-    String sql4 = "DELETE FROM Board WHERE B_no = ?";
-    String sql5 = "UPDATE Board SET main_text = ? WHERE B_no = ?";
+    String sql3 = "INSERT INTO Board(title,m_text,created,author)" + "VALUES(?,?,NOW(),?)";
 
     java.sql.ResultSet rs;
     PreparedStatement ps = null;
@@ -19,7 +17,7 @@ public class OpenDB {
     }
 
     void connect() {
-        String dbinfo = "jdbc:mysql://localhost:3306/member";
+        String dbinfo = "jdbc:mysql://localhost:3307/Member";
         String dbid = "root";
         String dbps = "135156";
 
@@ -56,7 +54,7 @@ public class OpenDB {
         }
     }
 
-    boolean check(String user_id, String user_password){
+    void check(String user_id, String user_password){
         try {
             pstmt = conn.prepareStatement(sql2);
             pstmt.setString(1, user_id);
@@ -66,19 +64,15 @@ public class OpenDB {
 
                 if(tmp_pass.equals(user_password)){
                     System.out.println("로그인이 성공하였습니다 !!!");
-                    return true;
                 }else{
                     System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
-                    return false;
                 }
             }else{
                 System.out.println("ID 또는 비밀번호가 틀렸습니다 !!!");
-                return false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     void Write(String title, String plaintext, String user_id){
@@ -87,27 +81,6 @@ public class OpenDB {
             pstmt.setString(1,title);
             pstmt.setString(2,plaintext);
             pstmt.setString(3,user_id);
-            this.pstmt.executeUpdate();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    void Delete(String no){
-        try{
-            pstmt = conn.prepareStatement(sql4);
-            pstmt.setString(1, no);
-            this.pstmt.executeUpdate();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    void Modify(String plaintext, int B_no){
-        try{
-            pstmt = conn.prepareStatement(sql5);
-            pstmt.setString(1,plaintext);
-            pstmt.setInt(2, B_no);
             this.pstmt.executeUpdate();
         }catch(Exception e){
             e.printStackTrace();
