@@ -41,6 +41,7 @@ public class Main {
                         }else if(menu.equals("4")){
                             B1.view();
                         }else if(menu.equals("5")){
+                            System.out.println("프로그램을 종료합니다.");
                             return;
                         }
                     }
